@@ -1,5 +1,10 @@
 import { useMemo } from 'react';
-import { CalendarOutlined, DownOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
+import {
+  CalendarOutlined,
+  DownOutlined,
+  LogoutOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 import { Avatar, Dropdown, Layout, Menu, Space, Tag, Typography } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
@@ -22,7 +27,9 @@ const AppLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const visibleNavItems = NAV_ITEMS.filter((item) => hasPermission(user?.role, item.permission));
+  const visibleNavItems = NAV_ITEMS.filter((item) =>
+    hasPermission(user?.role, item.permission),
+  );
 
   const menuItems = useMemo(
     () => visibleNavItems.map((item) => ({ key: item.to, label: item.label })),
@@ -30,7 +37,8 @@ const AppLayout = () => {
   );
 
   const selectedKey =
-    visibleNavItems.find((item) => location.pathname.startsWith(item.to))?.to ?? '';
+    visibleNavItems.find((item) => location.pathname.startsWith(item.to))?.to ??
+    '';
 
   const userMenuItems = [
     {
@@ -72,8 +80,11 @@ const AppLayout = () => {
           <Space style={{ cursor: 'pointer' }}>
             <Avatar icon={<UserOutlined />} />
             <span>
-              <Text>{user?.name}</Text>{' '}
-              <Tag color={ROLE_COLORS[user?.role] || 'default'} style={{ textTransform: 'capitalize' }}>
+              <Text>{user?.firstName}</Text>{' '}
+              <Tag
+                color={ROLE_COLORS[user?.role] || 'default'}
+                style={{ textTransform: 'capitalize' }}
+              >
                 {user?.role}
               </Tag>
             </span>

@@ -23,7 +23,10 @@ export const loginUser = createAsyncThunk(
   'auth/login',
   async ({ email, password }, { rejectWithValue }) => {
     try {
-      const { data } = await apiClient.post('/auth/login', { email, password });
+      const { data } = await apiClient.post('/users/login', {
+        email,
+        password,
+      });
       return data; // expected shape: { token, user: { id, name, email, role, managerId } }
     } catch (err) {
       const message =
