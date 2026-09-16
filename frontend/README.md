@@ -1,16 +1,41 @@
-# React + Vite
+# Frontend — Leave and Absence Management
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React app for the leave management POC. See [`CLAUDE.md`](./CLAUDE.md) for the UI requirements
+this frontend must satisfy, and the repo root
+[`01-leave-and-absence-management.md`](../01-leave-and-absence-management.md) for the full spec.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React 19 + Vite
+- Redux Toolkit + React Redux for state
+- React Router for routing
+- Axios for API calls
 
-## React Compiler
+## Setup
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+npm install
+npm run dev        # Vite dev server
+npm run build       # production build
+npm run preview     # preview the production build
+npm run lint
+```
 
-## Expanding the ESLint configuration
+### Environment variables
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+`.env.local` holds the backend API base URL the app talks to.
+
+## Views by actor
+
+- **Employee** — submit a leave request, view own balance and history, view the team calendar
+- **Manager** — approval queue for direct reports, overlap info per request, approve/reject with
+  reason (cannot approve own request)
+- **HR/Admin** *(stretch)* — configure leave types/allowances, cross-team view
+
+## Notes
+
+- Every screen assumes an authenticated user — there's no anonymous/guest path.
+- Leave types are fetched from the API, not hardcoded, so a new type appears without a frontend
+  change.
+- The team calendar and any request lists are expected to be paginated/scoped server-side —
+  don't fetch everything and filter client-side.
