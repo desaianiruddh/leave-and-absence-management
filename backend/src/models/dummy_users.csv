@@ -1,0 +1,28 @@
+id,email,password,first_name,last_name,department,role,manager_id
+1,priya.sharma@orbitworks.com,Priya@1234,Priya,Sharma,IT Administration,admin,
+2,rohan.verma@orbitworks.com,Rohan@1234,Rohan,Verma,Engineering,manager,1
+3,anjali.nair@orbitworks.com,Anjali@1234,Anjali,Nair,Sales,manager,1
+4,karan.mehta@orbitworks.com,Karan@1234,Karan,Mehta,Marketing,manager,1
+5,neha.kulkarni@orbitworks.com,Neha@1234,Neha,Kulkarni,Finance,manager,1
+6,siddharth.rao@orbitworks.com,Siddharth@1234,Siddharth,Rao,Human Resources,manager,1
+7,meera.iyer@orbitworks.com,Meera@1234,Meera,Iyer,Customer Support,manager,1
+8,arjun.patel@orbitworks.com,Arjun@1234,Arjun,Patel,Engineering,employee,2
+9,sneha.reddy@orbitworks.com,Sneha@1234,Sneha,Reddy,Engineering,employee,2
+10,vikram.singh@orbitworks.com,Vikram@1234,Vikram,Singh,Engineering,employee,2
+11,pooja.desai@orbitworks.com,Pooja@1234,Pooja,Desai,Engineering,employee,2
+12,aditya.joshi@orbitworks.com,Aditya@1234,Aditya,Joshi,Engineering,employee,2
+13,ravi.kumar@orbitworks.com,Ravi@1234,Ravi,Kumar,Sales,employee,3
+14,divya.menon@orbitworks.com,Divya@1234,Divya,Menon,Sales,employee,3
+15,suresh.pillai@orbitworks.com,Suresh@1234,Suresh,Pillai,Sales,employee,3
+16,kavya.nair@orbitworks.com,Kavya@1234,Kavya,Nair,Sales,employee,3
+17,nikhil.bansal@orbitworks.com,Nikhil@1234,Nikhil,Bansal,Marketing,employee,4
+18,ritu.chawla@orbitworks.com,Ritu@1234,Ritu,Chawla,Marketing,employee,4
+19,manish.gupta@orbitworks.com,Manish@1234,Manish,Gupta,Marketing,employee,4
+20,shreya.kapoor@orbitworks.com,Shreya@1234,Shreya,Kapoor,Marketing,employee,4
+21,amit.shah@orbitworks.com,Amit@1234,Amit,Shah,Finance,employee,5
+22,deepika.rana@orbitworks.com,Deepika@1234,Deepika,Rana,Finance,employee,5
+23,rahul.bhatt@orbitworks.com,Rahul@1234,Rahul,Bhatt,Finance,employee,5
+24,sonal.trivedi@orbitworks.com,Sonal@1234,Sonal,Trivedi,Human Resources,employee,6
+25,vivek.malhotra@orbitworks.com,Vivek@1234,Vivek,Malhotra,Human Resources,employee,6
+26,ananya.sinha@orbitworks.com,Ananya@1234,Ananya,Sinha,Human Resources,employee,6
+27,tarun.chandra@orbitworks.com,Tarun@1234,Tarun,Chandra,Customer Support,employee,7
