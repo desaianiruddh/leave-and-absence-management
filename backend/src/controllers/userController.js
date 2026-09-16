@@ -48,4 +48,31 @@ const loginController = async (req, res) => {
   }
 };
 
+const listUsersController = async (req, res) => {
+  const query = `
+  select
+    u1.id,
+    u1.email,
+    u1.first_name || ' ' || u1.last_name as name,
+    u1.role,
+    u1.department,
+    u2.first_name || ' ' || u2.last_name as manager
+  from
+    users u1
+    left join users u2 on u1.manager_id = u2.id
+  order by
+    u1.id`;
+  try {
+    const { rows } = await pool.query(query);
+    res.json({
+      message: 'User listed fetched successfully',
+      data: rows,
+    });
+  } catch (err) {
+    console.error('List users error:', err);
+    return res.status(500).json({ error: 'Something went wrong' });
+  }
+};
+
 exports.login = loginController;
+exports.usersList = listUsersController;
