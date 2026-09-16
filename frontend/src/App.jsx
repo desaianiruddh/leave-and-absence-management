@@ -5,6 +5,7 @@ import DashboardPage from './pages/Dashboard/DashboardPage';
 import CalendarPage from './pages/Calendar/CalendarPage';
 import ApprovalsPage from './pages/Approvals/ApprovalsPage';
 import AdminLeaveTypesPage from './pages/Admin/AdminLeaveTypesPage';
+import UsersListPage from './pages/Admin/UsersListPage';
 import UnauthorizedPage from './pages/Unauthorized/UnauthorizedPage';
 import RequireAuth from './routes/RequireAuth';
 import RequirePermission from './routes/RequirePermission';
@@ -46,6 +47,14 @@ const App = () => {
               path="/admin/leave-types"
               element={<AdminLeaveTypesPage />}
             />
+          </Route>
+
+          <Route
+            element={
+              <RequirePermission permission={PERMISSIONS.VIEW_USERS_LIST} />
+            }
+          >
+            <Route path="/admin/users" element={<UsersListPage />} />
           </Route>
         </Route>
       </Route>

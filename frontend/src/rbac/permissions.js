@@ -11,6 +11,7 @@ export const PERMISSIONS = {
   DECIDE_REQUEST: 'decide_request',
   MANAGE_LEAVE_TYPES: 'manage_leave_types',
   VIEW_ALL_TEAMS: 'view_all_teams',
+  VIEW_USERS_LIST: 'view_users_list',
 };
 
 const EMPLOYEE_PERMISSIONS = [
@@ -29,6 +30,7 @@ const ADMIN_PERMISSIONS = [
   ...MANAGER_PERMISSIONS,
   PERMISSIONS.MANAGE_LEAVE_TYPES,
   PERMISSIONS.VIEW_ALL_TEAMS,
+  PERMISSIONS.VIEW_USERS_LIST,
 ];
 
 export const PERMISSIONS_BY_ROLE = {
