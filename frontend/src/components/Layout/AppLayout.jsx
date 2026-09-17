@@ -94,7 +94,7 @@ const AppLayout = () => {
       </Header>
 
       <Content style={{ padding: 24 }}>
-        <div style={{ maxWidth: 1080, margin: '0 auto' }}>
+        <div style={{ maxWidth: '80vw', margin: '0 auto' }}>
           <Outlet />
         </div>
       </Content>
