@@ -5,7 +5,7 @@ const { authenticateToken, requireRole } = require('../middleware/auth');
 const router = express.Router();
 
 router.post(
-  '/add-leave-type',
+  '/add',
   authenticateToken,
   requireRole('admin'),
   leaveTypeController.addLeaveType,
