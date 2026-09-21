@@ -1,6 +1,7 @@
 const pool = require('../config/db');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const { LOGIN_QUERY, GET_USERS_LIST } = require('../services/userQuery');
 
 const loginController = async (req, res) => {
   const { email, password } = req.body;
@@ -10,9 +11,7 @@ const loginController = async (req, res) => {
   }
 
   try {
-    const { rows } = await pool.query('SELECT * FROM users WHERE email = $1', [
-      email,
-    ]);
+    const { rows } = await pool.query(LOGIN_QUERY, [email]);
     const user = rows[0];
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
@@ -49,21 +48,8 @@ const loginController = async (req, res) => {
 };
 
 const listUsersController = async (req, res) => {
-  const query = `
-  select
-    u1.id,
-    u1.email,
-    u1.first_name || ' ' || u1.last_name as name,
-    u1.role,
-    u1.department,
-    u2.first_name || ' ' || u2.last_name as manager
-  from
-    users u1
-    left join users u2 on u1.manager_id = u2.id
-  order by
-    u1.id`;
   try {
-    const { rows } = await pool.query(query);
+    const { rows } = await pool.query(GET_USERS_LIST);
     res.json({
       message: 'User listed fetched successfully',
       data: rows,
