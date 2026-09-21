@@ -1,5 +1,14 @@
 import { useEffect } from 'react';
-import { Form, Input, InputNumber, Modal, Switch, Typography } from 'antd';
+import {
+  Col,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Row,
+  Switch,
+  Typography,
+} from 'antd';
 
 const { TextArea } = Input;
 const { Text } = Typography;
@@ -54,18 +63,37 @@ const LeaveTypeModal = ({
       confirmLoading={confirmLoading}
       destroyOnHidden
       mask={false}
+      width={680}
     >
       <Form form={form} layout="vertical" initialValues={DEFAULT_VALUES}>
-        <Form.Item
-          name="name"
-          label="Name"
-          rules={[
-            { required: true, message: 'Please enter a leave type name' },
-            { max: 100, message: 'Name must be 100 characters or fewer' },
-          ]}
-        >
-          <Input placeholder="e.g. Sick Leave" />
-        </Form.Item>
+        <Row gutter={24}>
+          <Col span={16}>
+            <Form.Item
+              name="name"
+              label="Name"
+              rules={[
+                { required: true, message: 'Please enter a leave type name' },
+                { max: 100, message: 'Name must be 100 characters or fewer' },
+              ]}
+            >
+              <Input placeholder="e.g. Sick Leave" />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              name="defaultAllocationDays"
+              label="Default Allocation (days)"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please enter a default allocation',
+                },
+              ]}
+            >
+              <InputNumber min={0} step={0.5} style={{ width: '100%' }} />
+            </Form.Item>
+          </Col>
+        </Row>
 
         <Form.Item name="description" label="Description">
           <TextArea
@@ -74,76 +102,78 @@ const LeaveTypeModal = ({
           />
         </Form.Item>
 
-        <Form.Item
-          name="defaultAllocationDays"
-          label="Default Allocation (days)"
-          rules={[
-            { required: true, message: 'Please enter a default allocation' },
-          ]}
-        >
-          <InputNumber min={0} step={0.5} style={{ width: '100%' }} />
-        </Form.Item>
+        <Row gutter={24}>
+          <Col span={12}>
+            <Form.Item
+              name="drawsFromBalance"
+              label="Draws From Balance"
+              valuePropName="checked"
+              extra={
+                <Text type="secondary">
+                  Requests of this type deduct from the employee&apos;s leave
+                  balance.
+                </Text>
+              }
+            >
+              <Switch />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              name="requiresApproval"
+              label="Requires Approval"
+              valuePropName="checked"
+              extra={
+                <Text type="secondary">
+                  Requests of this type must be approved by a manager.
+                </Text>
+              }
+            >
+              <Switch />
+            </Form.Item>
+          </Col>
+        </Row>
 
-        <Form.Item
-          name="drawsFromBalance"
-          label="Draws From Balance"
-          valuePropName="checked"
-          extra={
-            <Text type="secondary">
-              Requests of this type deduct from the employee&apos;s leave
-              balance.
-            </Text>
-          }
-        >
-          <Switch />
-        </Form.Item>
+        <Row gutter={24}>
+          {requiresApproval && (
+            <Col span={12}>
+              <Form.Item
+                name="twoStepThresholdDays"
+                label="Two-Step Approval Threshold (days)"
+                extra={
+                  <Text type="secondary">
+                    Requests longer than this many days require a second
+                    approval on top of the first. Leave blank for single-step
+                    approval only.
+                  </Text>
+                }
+              >
+                <InputNumber
+                  min={0}
+                  step={0.5}
+                  style={{ width: '100%' }}
+                  placeholder="Single-step approval"
+                />
+              </Form.Item>
+            </Col>
+          )}
 
-        <Form.Item
-          name="requiresApproval"
-          label="Requires Approval"
-          valuePropName="checked"
-          extra={
-            <Text type="secondary">
-              Requests of this type must be approved by a manager.
-            </Text>
-          }
-        >
-          <Switch />
-        </Form.Item>
-
-        {requiresApproval && (
-          <Form.Item
-            name="twoStepThresholdDays"
-            label="Two-Step Approval Threshold (days)"
-            extra={
-              <Text type="secondary">
-                Requests longer than this many days require a second approval on
-                top of the first. Leave blank for single-step approval only.
-              </Text>
-            }
-          >
-            <InputNumber
-              min={0}
-              step={0.5}
-              style={{ width: '100%' }}
-              placeholder="Single-step approval"
-            />
-          </Form.Item>
-        )}
-
-        <Form.Item
-          name="isActive"
-          label="Active"
-          valuePropName="checked"
-          extra={
-            <Text type="secondary">
-              Inactive leave types are hidden from new requests but remain on
-              past records.
-            </Text>
-          }
-        >
-          <Switch />
-        </Form.Item>
+          <Col span={requiresApproval ? 12 : 24}>
+            <Form.Item
+              name="isActive"
+              label="Active"
+              valuePropName="checked"
+              extra={
+                <Text type="secondary">
+                  Inactive leave types are hidden from new requests but remain
+                  on past records.
+                </Text>
+              }
+            >
+              <Switch />
+            </Form.Item>
+          </Col>
+        </Row>
       </Form>
     </Modal>
   );
