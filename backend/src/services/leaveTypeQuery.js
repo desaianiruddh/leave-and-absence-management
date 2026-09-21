@@ -11,7 +11,7 @@ const ADD_LEAVE_TYPE = `INSERT INTO
     is_active
   )
 VALUES
-('', '', 20, true, true, 0, true);`;
+($1, $2, $3, $4, $5, $6, $7);`;
 
 exports.GET_LEAVE_TYPE = GET_LEAVE_TYPE;
 exports.ADD_LEAVE_TYPE = ADD_LEAVE_TYPE;
