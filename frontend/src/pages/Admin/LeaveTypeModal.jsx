@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import {
+  Alert,
   Col,
   Form,
   Input,
@@ -29,6 +30,7 @@ const LeaveTypeModal = ({
   onSubmit,
   initialValues,
   confirmLoading,
+  error,
 }) => {
   const [form] = Form.useForm();
   const requiresApproval = Form.useWatch('requiresApproval', form);
@@ -65,6 +67,14 @@ const LeaveTypeModal = ({
       mask={false}
       width={680}
     >
+      {error && (
+        <Alert
+          type="error"
+          message={error}
+          showIcon
+          style={{ marginBottom: 16 }}
+        />
+      )}
       <Form form={form} layout="vertical" initialValues={DEFAULT_VALUES}>
         <Row gutter={24}>
           <Col span={16}>

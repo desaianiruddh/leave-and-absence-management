@@ -1,7 +1,16 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Card, Empty, Table, Tag, Typography } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
 import LeaveTypeModal from './LeaveTypeModal';
+import {
+  addLeaveType,
+  fetchLeaveTypes,
+  selectLeaveTypesAddStatus,
+  selectLeaveTypesError,
+  selectLeaveTypesList,
+  selectLeaveTypesStatus,
+} from '../../features/leaveTypes/leaveTypesSlice';
 
 const { Title, Text } = Typography;
 
@@ -43,12 +52,23 @@ const columns = [
 ];
 
 const AdminLeaveTypesPage = () => {
-  const [leaveTypes, setLeaveTypes] = useState([]);
+  const dispatch = useDispatch();
+  const leaveTypes = useSelector(selectLeaveTypesList);
+  const status = useSelector(selectLeaveTypesStatus);
+  const addStatus = useSelector(selectLeaveTypesAddStatus);
+  const error = useSelector(selectLeaveTypesError);
   const [modalOpen, setModalOpen] = useState(false);
 
+  useEffect(() => {
+    dispatch(fetchLeaveTypes());
+  }, [dispatch]);
+
   const handleSubmit = (values) => {
-    setLeaveTypes((prev) => [...prev, { id: prev.length + 1, ...values }]);
-    setModalOpen(false);
+    dispatch(addLeaveType(values)).then((action) => {
+      if (action.meta.requestStatus === 'fulfilled') {
+        setModalOpen(false);
+      }
+    });
   };
 
   return (
@@ -76,12 +96,15 @@ const AdminLeaveTypesPage = () => {
           rowKey="id"
           columns={columns}
           dataSource={leaveTypes}
+          loading={status === 'loading'}
           pagination={false}
           locale={{
             emptyText: (
               <Empty
                 image={Empty.PRESENTED_IMAGE_SIMPLE}
-                description="No leave types configured"
+                description={
+                  status === 'failed' ? error : 'No leave types configured'
+                }
               />
             ),
           }}
@@ -92,6 +115,8 @@ const AdminLeaveTypesPage = () => {
         open={modalOpen}
         onCancel={() => setModalOpen(false)}
         onSubmit={handleSubmit}
+        confirmLoading={addStatus === 'loading'}
+        error={addStatus === 'failed' ? error : null}
       />
     </div>
   );
