@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 const userRoutes = require('./routes/userRoutes');
+const leaveTypeRoute = require('./routes/leaveTypeRoute');
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.get('/api/health', (req, res) => {
 });
 
 app.use('/api/users', userRoutes);
+app.use('/api/leave-type', leaveTypeRoute);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

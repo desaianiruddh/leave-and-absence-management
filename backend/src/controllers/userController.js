@@ -1,7 +1,7 @@
 const pool = require('../config/db');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const { LOGIN_QUERY, GET_USERS_LIST } = require('../services/usersQuery');
+const { LOGIN_QUERY, GET_USERS_LIST } = require('../services/userQuery');
 
 const loginController = async (req, res) => {
   const { email, password } = req.body;
