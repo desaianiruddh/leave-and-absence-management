@@ -17,7 +17,7 @@ apiClient.interceptors.request.use((config) => {
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    if ([401, 403].includes(error.response?.status)) {
       localStorage.removeItem(TOKEN_STORAGE_KEY);
       localStorage.removeItem('lam_user');
       if (window.location.pathname !== '/login') {

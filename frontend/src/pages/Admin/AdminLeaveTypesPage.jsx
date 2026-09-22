@@ -1,21 +1,49 @@
 import { useEffect, useState } from 'react';
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, Card, Empty, Table, Tag, Typography } from 'antd';
+import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
+import {
+  Button,
+  Card,
+  Empty,
+  Popconfirm,
+  Space,
+  Table,
+  Tag,
+  Tooltip,
+  Typography,
+} from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import LeaveTypeModal from './LeaveTypeModal';
 import {
   addLeaveType,
+  deleteLeaveType,
   fetchLeaveTypes,
   selectLeaveTypesAddStatus,
+  selectLeaveTypesDeleteStatus,
   selectLeaveTypesError,
   selectLeaveTypesList,
   selectLeaveTypesStatus,
+  selectLeaveTypesUpdateStatus,
+  updateLeaveType,
 } from '../../features/leaveTypes/leaveTypesSlice';
 
 const { Title, Text } = Typography;
 
-const columns = [
+const buildColumns = ({ onEdit, onDelete, deleteStatus }) => [
   { title: 'Name', dataIndex: 'name', key: 'name' },
+  {
+    title: 'Description',
+    dataIndex: 'description',
+    key: 'description',
+    ellipsis: { showTitle: false },
+    render: (value) =>
+      value ? (
+        <Tooltip title={value} placement="bottomLeft">
+          <span>{value}</span>
+        </Tooltip>
+      ) : (
+        '—'
+      ),
+  },
   {
     title: 'Default Allocation (days)',
     dataIndex: 'defaultAllocationDays',
@@ -49,6 +77,37 @@ const columns = [
       </Tag>
     ),
   },
+  {
+    title: 'Actions',
+    key: 'actions',
+    render: (_, record) => (
+      <Space>
+        <Tooltip title="Edit">
+          <Button
+            type="text"
+            icon={<EditOutlined />}
+            onClick={() => onEdit(record)}
+          />
+        </Tooltip>
+        <Popconfirm
+          title="Delete leave type"
+          description={`Are you sure you want to delete "${record.name}"?`}
+          okText="Delete"
+          okButtonProps={{ danger: true }}
+          onConfirm={() => onDelete(record)}
+        >
+          <Tooltip title="Delete">
+            <Button
+              type="text"
+              danger
+              icon={<DeleteOutlined />}
+              loading={deleteStatus === 'loading'}
+            />
+          </Tooltip>
+        </Popconfirm>
+      </Space>
+    ),
+  },
 ];
 
 const AdminLeaveTypesPage = () => {
@@ -56,20 +115,57 @@ const AdminLeaveTypesPage = () => {
   const leaveTypes = useSelector(selectLeaveTypesList);
   const status = useSelector(selectLeaveTypesStatus);
   const addStatus = useSelector(selectLeaveTypesAddStatus);
+  const updateStatus = useSelector(selectLeaveTypesUpdateStatus);
+  const deleteStatus = useSelector(selectLeaveTypesDeleteStatus);
   const error = useSelector(selectLeaveTypesError);
   const [modalOpen, setModalOpen] = useState(false);
+  const [editingLeaveType, setEditingLeaveType] = useState(null);
 
   useEffect(() => {
     dispatch(fetchLeaveTypes());
   }, [dispatch]);
 
+  const handleAddClick = () => {
+    setEditingLeaveType(null);
+    setModalOpen(true);
+  };
+
+  const handleEditClick = (record) => {
+    setEditingLeaveType(record);
+    setModalOpen(true);
+  };
+
+  const handleDeleteClick = (record) => {
+    dispatch(deleteLeaveType(record.id));
+  };
+
   const handleSubmit = (values) => {
+    if (editingLeaveType) {
+      dispatch(updateLeaveType({ id: editingLeaveType.id, ...values })).then(
+        (action) => {
+          if (action.meta.requestStatus === 'fulfilled') {
+            setModalOpen(false);
+            setEditingLeaveType(null);
+          }
+        },
+      );
+      return;
+    }
+
     dispatch(addLeaveType(values)).then((action) => {
       if (action.meta.requestStatus === 'fulfilled') {
         setModalOpen(false);
       }
     });
   };
+
+  const columns = buildColumns({
+    onEdit: handleEditClick,
+    onDelete: handleDeleteClick,
+    deleteStatus,
+  });
+
+  const modalStatus = editingLeaveType ? updateStatus : addStatus;
 
   return (
     <div>
@@ -86,7 +182,7 @@ const AdminLeaveTypesPage = () => {
           <Button
             type="primary"
             icon={<PlusOutlined />}
-            onClick={() => setModalOpen(true)}
+            onClick={handleAddClick}
           >
             Add Leave Type
           </Button>
@@ -113,10 +209,14 @@ const AdminLeaveTypesPage = () => {
 
       <LeaveTypeModal
         open={modalOpen}
-        onCancel={() => setModalOpen(false)}
+        onCancel={() => {
+          setModalOpen(false);
+          setEditingLeaveType(null);
+        }}
         onSubmit={handleSubmit}
-        confirmLoading={addStatus === 'loading'}
-        error={addStatus === 'failed' ? error : null}
+        initialValues={editingLeaveType}
+        confirmLoading={modalStatus === 'loading'}
+        error={modalStatus === 'failed' ? error : null}
       />
     </div>
   );
